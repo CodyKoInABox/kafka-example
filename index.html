@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Producer | Apresentacao Diogo</title>
+    <link rel="stylesheet" href="frontend.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Send Message to Kafka</h1>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <input type="text" id="message" placeholder="Enter your message">
+        </div>
+        <button onclick="sendMessage()">Send Message</button>
+
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById("message").value;
+            const statusDiv = document.getElementById("status");
+
+            if (!message) {
+                statusDiv.textContent = "Please enter a message.";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/send-message", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                if (response.ok) {
+                    statusDiv.textContent = "Message sent successfully!";
+                } else {
+                    statusDiv.textContent = "Failed to send message.";
+                }
+            } catch (error) {
+                statusDiv.textContent = "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
